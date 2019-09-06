@@ -13,8 +13,8 @@ export default class Edit extends Component {
         this.onChangeCardno         =this.onChangeCardno.bind(this);
         this.onChangePersonCvc =this.onChangePersonCvc.bind(this);
         this.onChangeExpiredate=this.onChangeExpiredate.bind(this);
-
-
+        this.checksum=this.checksum.bind(this);
+        this.onSubmit2 = this.onSubmit2.bind(this);
 
         this.onSubmit = this.onSubmit.bind(this);
 
@@ -38,7 +38,8 @@ export default class Edit extends Component {
 
     componentDidMount() {
 
-        alert("yuyu")
+
+
 
         axios.get('http://localhost:4000/business/items')
             .then(response => {
@@ -92,6 +93,14 @@ export default class Edit extends Component {
         });
     }
 
+    checksum(e){
+
+
+            this.props.history.push('/sendtosenior')
+
+    }
+
+
     onSubmit(e) {
         e.preventDefault();
 
@@ -112,26 +121,27 @@ export default class Edit extends Component {
 
             }
 
-            axios.post('http://localhost:4000/business/invoice',obj).then(res=>{
+            axios.post('http://localhost:4000/business/payment',obj).then(res=>{
 
                 console.log(res.data)
 
-                alert("Order Has been Succeeded !");
-                this.props.history.push('/finalbill/'+this.state.name+'/'+this.state.email+'/'+this.state.address);
+                alert("Order Has been sent to the senior manager");
+                //this.props.history.push('/finalbill/'+this.state.name+'/'+this.state.email+'/'+this.state.address);
             })
 
         })
 
-
-
-
-
-
     }
+
+    onSubmit2(e){
+
+        this.props.history.push('/payment')
+    }
+
 
     render() {
 
-        this.state.x=0;
+       this.state.x=0;
 
         return (
 
@@ -155,8 +165,13 @@ export default class Edit extends Component {
 
 
                             return(
+
+
+
+
+
                                 <div>
-                                    <p>Product: &nbsp;  {obj.pname}</p>
+                            <p>Product: &nbsp;  {obj.pname}</p>
                                     <p>ID: &nbsp; {obj.pid}</p>
                                     <p> Quantity: &nbsp; {obj.pqty}</p>
                                     <p> Price: &nbsp; {obj.psprice}</p>
@@ -165,88 +180,29 @@ export default class Edit extends Component {
 
 
                                 </div>
-                            )})
+                                    )})
 
                     }
 
                     <h4> Sum: &nbsp; {this.state.x}</h4><br/>
 
-                    <form>
+                    {this.state.x<100000 ? (
                         <div className="form-group">
-                            <label>Email </label>
-                            <input
-                                type="email"
-                                className="form-control"
-                                value={this.state.email}
-                                onChange={this.onChangePersonEmail}
-                                required
-                            />
+                            <Link to  onClick={this.onSubmit2} className="btn btn-primary"> Enter to the payment procedure</Link>
+
                         </div>
+                    ) : (
                         <div className="form-group">
-                            <label>Full Name </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                value={this.state.name}
-                                onChange={this.onChangePersonName}
-                                required
-                            />
+                            <Link to  onClick={this.onSubmit} className="btn btn-primary"> Get the Aprroval</Link>
+
                         </div>
-
-                        <div className="form-group">
-                            <label>Card No </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                value={this.state.cardno}
-                                onChange={this.onChangeCardno}
-                                placeholder="**** **** **** ****"
-                                required
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label>CVV Number </label>
-                            <input
-                                type="number"
-                                className="form-control"
-                                value={this.state.cvc}
-                                onChange={this.onChangePersonCvc}
-                                placeholder="***"
-                                required
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label>Expire Date </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                value={this.state.expiredate}
-                                onChange={this.onChangeExpiredate}
-                                placeholder="MM / YY"
-                                required
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label>Address : </label><br></br>
-                            <textarea
-                                className="form-control"
-                                value={this.state.address}
-                                onChange={this.onChangePersonaddress}
-                            />
-                        </div>
-
-
-                    </form>
+                    )}
 
 
 
-                    <div className="form-group">
-                        <Link to  onClick={this.onSubmit} className="btn btn-primary">Confirm Order</Link>
 
-                    </div>
+
+
 
 
                 </div>

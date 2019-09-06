@@ -7,6 +7,8 @@ const businessRoutes = express.Router();
 let Business = require('./business.model');
 let Cart=require('./cart.model')
 let Bill=require('./bill.model')
+let Invoice=require('./invoice.model')
+
 
 let Orderingitems = require('./addorder.model');
 
@@ -34,6 +36,19 @@ businessRoutes.route('/cart').post(function (req, res) {
             res.status(400).send("unable to save to database");
         });
 });
+
+//invoice add
+businessRoutes.route('/invoice').post(function (req, res) {
+    let invoice = new Invoice(req.body);
+   invoice.save()
+        .then(cart => {
+            res.status(200).json({'cart': 'cart in added successfully'});
+        })
+        .catch(err => {
+            res.status(400).send("unable to save to database");
+        });
+});
+
 
 //add ordering items
 businessRoutes.route('/orderingitems').post(function (req, res) {

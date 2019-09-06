@@ -23,7 +23,8 @@ export default class cart extends Component {
             business: [],
             search:'',
             aname: [],
-            sqty:''
+            sqty:'',
+            items:[]
 
         };
 
@@ -122,10 +123,39 @@ export default class cart extends Component {
 
     onorder(){
 
+        axios.get('http://localhost:4000/business/items')
+            .then(response => {
+
+                console.log(response.data)
+                this.setState({
+                    items: response.data
+
+                },()=>{
+
+                    if(this.state.items==''){
+
+                        alert("haven't selected items !")
+                    }
+
+                    else{
+
+                        this.props.history.push('/sendtosenior')
+                    }
+                }
+
+                )
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
 
 
 
-        this.props.history.push('/payment')
+
+
+        //this.props.history.push('/payment')
+
+
 
 
 
@@ -224,10 +254,7 @@ export default class cart extends Component {
                                 <td>{obj.description}</td>
 
                                 <td>{obj.pqty}</td>
-                                <td> <input type="checkbox" aria-label="Checkbox for following text input"
-                                            checked={this.state.isGoing}
-                                            onChange={this.handleInputChange}
-                                id={obj.pid}></input></td>
+
                                 <td> <Link to={"/cartedit/"+obj._id} className="btn btn-primary">Edit</Link></td>
                                 <td> <Link to  onClick={this.delete} id={obj._id} className="btn btn-danger">Delete</Link></td>
                                 <td> <Link to  onClick={this.addorder}

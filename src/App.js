@@ -9,8 +9,9 @@ import update from './components/update.component';
 import cart from './components/cart.component';
 import view from './components/productview.component';
 import cartedit from './components/cartedit.component';
-import payment from './components/payment.component';
+import sendtosenior from './components/sendtosenior.component';
 import finalbill from './components/displaybill.component'
+import payment from './components/payment.component'
 
 
 
@@ -48,8 +49,10 @@ class App extends Component {
               <Route path='/cart' component={ cart } />
               <Route path='/view/:id' component={ view } />
               <Route path='/cartedit/:id' component={ cartedit } />
-              <Route path='/payment' component={payment } />
+              <Route path='/sendtosenior' component={sendtosenior} />
               <Route path='/finalbill/:name/:email/:address' component={finalbill } />
+              <Route path='/payment' component={payment } />
+
 
 
           </Switch>
